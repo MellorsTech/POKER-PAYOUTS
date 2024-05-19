@@ -1,0 +1,115 @@
+
+:root {
+    --main:#635e87;
+    --hover: #8B87AB;
+    --background: #2c2c2c;
+}
+
+.dealContainer {
+    display: flex;
+    flex-direction: column;
+    margin: auto auto;
+    text-align: center;
+    max-width: 800px;
+    flex-grow: 1;
+}
+
+.dealHeader {
+    padding: 1rem 0 .5rem 0;
+
+}
+
+
+.dealDetails {
+    font-size: small;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.442);
+    text-wrap: wrap;
+    padding-bottom: .5rem;
+    margin: 0 2rem 0 2rem;
+}
+
+.dealInputsContainer {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 300px;
+    min-width: 100px;
+    padding: 1rem 0 1rem 0;
+}
+
+.dealInputsContainer input, 
+.chipInputs input {
+    margin: .3rem 0 1rem 0;
+    padding: .3rem;
+    border-radius: 20px;
+    background-color: white;
+    text-align: center;
+    font-size: medium;
+    color: #000;
+    
+}
+
+.dealInputsContainer input::-webkit-inner-spin-button,
+.chipInputs input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.dealInputsContainer input:focus,
+.chipInputs input:focus {
+    outline-color: var(--main);
+}
+
+.dealBreakline {
+    margin-bottom: 1rem;
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(225, 225, 225, .5), rgba(99, 94, 135, .9), rgba(225, 225, 225, .5));
+}
+
+.showPlayersBtn,
+.payoutsBtn {
+    width: 100%;
+    height: 3rem;
+    font-weight: 600;
+    color: white;
+    border-radius: 15px;
+    background-color: var(--main);
+    transition: .3s;
+    margin-bottom: .5rem;
+}
+
+.showPlayersBtn:hover,
+.payoutsBtn:hover {
+    cursor: pointer;
+    background-color: var(--hover);
+}
+
+.chipInputs {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 200px;
+}
+
+.payoutsBtn {
+    margin: 0 auto;
+    width: 200px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dealMoneyIcon {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    font-size: 2rem;
+}
+
+.totalText {
+    font-weight: 600;
+    font-style: italic;
+    margin-top: 1rem;
+    color: var(--hover);
+    font-size: large;
+    margin-bottom: 2rem;
+}

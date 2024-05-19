@@ -1,0 +1,58 @@
+
+:root {
+    --main:#635E87;
+    --hover: #8B87AB;
+    --background: #2c2c2c;
+    
+}
+
+footer {
+    background-color: var(--background);
+    color: white;
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+    align-items: center;
+    padding: 1rem;
+    box-shadow: 0 -10px 10px -5px rgb(0 0 0 / 0.1), 0 -8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.footer {
+    display: flex;
+    align-items: inherit;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+    
+}
+
+.Contact {
+    text-align: center;
+    max-width: 250px;
+}
+
+.contact-btn {
+    width: 9rem;
+    height: 2.5rem;
+    font-weight: 600;
+    color: white;
+    border-radius: 15px;
+    background-color: var(--main);
+    transition: .3s;
+    margin-bottom: .3rem;
+}
+
+.contact-btn:hover {
+    cursor: pointer;
+    background-color: var(--hover);
+}
+
+.contactText {
+    font-size: small;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.442);
+    text-wrap: wrap;
+}
+
+.footerlogo {
+    max-height: 100px;
+    min-height: 50px;
+}

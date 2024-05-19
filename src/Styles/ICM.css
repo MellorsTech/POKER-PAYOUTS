@@ -1,0 +1,124 @@
+.icmContainer {
+    margin: 1rem auto 0 auto;
+    min-width: 50vw;
+
+}
+
+.icmHeading {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.icmDetails {
+    font-size: small;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.442);
+    text-wrap: wrap;
+    padding-bottom: .5rem;
+    text-align: center;
+    margin-bottom: 1REM;
+}
+
+.getPlayers {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    max-width: 50%;
+    margin: 0 auto;
+}
+
+.getPlayers input, 
+.icmInput input {
+    margin: .3rem 0 1rem 0;
+    padding: .3rem;
+    border-radius: 20px;
+    background-color: white;
+    text-align: center;
+    font-size: medium;
+    color: #000;
+    
+}
+.getPlayers input::-webkit-inner-spin-button, 
+.icmInput input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.getPlayers input:focus, 
+.icmInput input:focus {
+    outline-color: var(--main);
+}
+
+.getPlayerBtn {
+    width: 100%;
+    height: 3rem;
+    font-weight: 600;
+    color: white;
+    border-radius: 15px;
+    background-color: var(--main);
+    transition: .3s;
+    margin-bottom: .5rem;
+}
+
+.getPlayerBtn:hover {
+    cursor: pointer;
+    background-color: var(--hover);
+}
+
+.icmInput {
+    display: flex;
+    flex-direction: column;
+}
+
+.icmPlayerIndex {
+    margin-right: 1rem;
+}
+
+.icmInputSingle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.icmCalcBtn {
+    width: 50%;
+    height: 3rem;
+    font-weight: 600;
+    color: white;
+    border-radius: 15px;
+    background-color: var(--main);
+    transition: .3s;
+    display: flex;
+    margin: 0 auto .5rem auto;
+    justify-content: center;
+    align-items: center;
+ 
+}
+
+.icmCalcBtn:hover {
+    cursor: pointer;
+    background-color: var(--hover);
+}
+
+.icmPayouts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.icmTotalsSingle {
+    margin-left: 1rem;
+}
+
+.icmTotals {
+    margin: 1rem 0 1rem 0;
+}
+
+.icmPayoutsSingle {
+    margin-bottom: .5rem;
+}
+
+.icmPrizeInput {
+    margin-left: .5rem !important;
+}

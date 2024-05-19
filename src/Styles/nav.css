@@ -1,0 +1,113 @@
+
+
+.logo {
+    max-height: 100px;
+}
+
+
+.Container {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    align-items: center;
+    background-color: rgb(44, 44, 44);
+    padding: 10px;
+    box-shadow: 0 10px 10px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+}
+
+.navContainer {
+    display: flex;
+    align-items: inherit;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.navLogo {
+    display: flex;
+    align-items: center;
+}
+
+h1 {
+    color: #635E87;
+    transition: 1s;
+}
+
+.navMenu {
+    display: flex; 
+    list-style-type: none;
+}
+
+.link {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+    margin: 10px;
+    transition: 0.5s;
+    
+}
+
+.hide_nav{
+    display: none;
+}
+
+.link:hover {
+    color: #635E87;
+    cursor: pointer;
+}
+
+.nav-btn {
+    padding: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color: white;
+    display: none;
+    opacity: 0;
+    font-size: 1.8rem;
+}
+
+@media (max-width: 1000px) {
+
+    h1 {
+        font-size: 20px;
+    }
+
+   .navMenu {
+    position: fixed;
+    inset: 0 0 0 25%;
+    flex-direction: column;
+    padding: 12vh;
+    align-items: center;
+    gap:1.5rem;
+    background:hsl(0 0% 0% / .1); 
+    backdrop-filter: blur(1.25rem);
+   }
+
+   .nav-btn {
+    display: block;
+    opacity: 1;
+   }
+
+
+   .nav-close-btn {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+   }
+
+   .closeX {
+    background: transparent;
+   }
+
+   .nav-close-btn :hover {
+    color: red;
+    background: transparent;
+   }
+
+.link:hover {
+    color: #635E87;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+}
