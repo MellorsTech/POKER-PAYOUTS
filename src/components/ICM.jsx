@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { bruteForceICM, createPlayer } from '../scripts/icm';
 import { GiTakeMyMoney } from "react-icons/gi";
 import _ from 'lodash';
 import '../Styles/ICM.css';
 
 const ICMCalculator = () => {
-    const [players, setPlayers] = useState([]);
-    const [results, setResults] = useState([]);
-    const [numOfPlayers, setNumOfPlayers] = useState('');
-    const [showFields, setShowFields] = useState(false);
-    const [errMessage, setErrMessage] = useState(false);
-    const [chipTotal, setChipTotal] = useState(0);
-    const [prizePool, setPrizePool] = useState(0);
-    const [showTotals, setShowTotals] = useState(false);
+    const [state, setState] = useState({
+        players: [],
+        results: [],
+        numOfPlayers: '',
+        showFields: false,
+        errMessage: false,
+        chipTotal: 0,
+        prizePool: 0,
+        showTotals: false
+    });
 
     const formatChips = (value) => {
         return value ? `T - ${new Intl.NumberFormat().format(value)}` : '';
@@ -27,40 +29,59 @@ const ICMCalculator = () => {
         }).format(value) : '';
     };
 
-    const handlePlayerChange = (index, key, value) => {
-        const newPlayers = [...players];
-        newPlayers[index][key] = value;
-        setPlayers(newPlayers);
-        updateTotals(newPlayers);
+    const parseChips = (value) => {
+        return parseFloat(value.replace('T -', '').replace(/,/g, '')) || '';
     };
 
-    const handleNumberOfPlayers = (value) => {
-        setNumOfPlayers(value);
+    const parseMoney = (value) => {
+        return parseFloat(value.replace(/[$,]/g, '')) || '';
+    };
+
+    const handlePlayerChange = useCallback((index, key, value) => {
+        const newPlayers = [...state.players];
+        newPlayers[index][key] = key === 'stack' ? parseChips(value) : parseMoney(value);
+        setState(prevState => ({ ...prevState, players: newPlayers }));
+        updateTotals(newPlayers);
+    }, [state.players]);
+
+    const handleNumberOfPlayers = useCallback((value) => {
         if (value > 0 && value <= 15) {
             const newPlayers = Array.from({ length: value }, () => ({ stack: '', prize: '' }));
-            setPlayers(newPlayers);
-            setShowFields(true);
-            setErrMessage(false);
-        } else if (value >= 16) {
-            setErrMessage(true);
-            setShowFields(false);
+            setState(prevState => ({
+                ...prevState,
+                players: newPlayers,
+                numOfPlayers: value,
+                showFields: true,
+                errMessage: false
+            }));
+        } else {
+            setState(prevState => ({
+                ...prevState,
+                numOfPlayers: value,
+                errMessage: value >= 16,
+                showFields: value <= 15
+            }));
         }
-    };
+    }, []);
 
-    const updateTotals = (newPlayers) => {
+    const updateTotals = useCallback((newPlayers) => {
         const totalChips = _.sumBy(newPlayers, (player) => parseFloat(player.stack) || 0);
         const totalPrizes = _.sumBy(newPlayers, (player) => parseFloat(player.prize) || 0);
-        setChipTotal(totalChips);
-        setPrizePool(totalPrizes);
-    };
+        setState(prevState => ({
+            ...prevState,
+            chipTotal: totalChips,
+            prizePool: totalPrizes
+        }));
+    }, []);
 
-    const calculateICM = () => {
+    const calculateICM = useCallback(() => {
+        const { players } = state;
         const totalChips = _.sumBy(players, (player) => parseFloat(player.stack) || 0);
         const prizeAmounts = players.map((player) => parseFloat(player.prize) || 0);
         const playerRefs = players.map((player) => createPlayer(parseFloat(player.stack)));
 
         if (totalChips === 0 || prizeAmounts.length === 0) {
-            setResults([]);
+            setState(prevState => ({ ...prevState, results: [] }));
             return;
         }
 
@@ -80,14 +101,19 @@ const ICMCalculator = () => {
             percentage: (player.ev / totalPrizePool) * 100,
         }));
 
-        setResults(normalizedResults);
-        setShowTotals(true);
-    };
+        setState(prevState => ({
+            ...prevState,
+            results: normalizedResults,
+            showTotals: true
+        }));
+    }, [state.players]);
+
+    const { players, numOfPlayers, showFields, errMessage, chipTotal, prizePool, showTotals, results } = state;
 
     return (
         <section className='icmContainer'>
             <h2 className='icmHeading'>ICM Calculator</h2>
-            <p className='icmDetails'>ICM Calculator supports upto 15 Players. </p>
+            <p className='icmDetails'>ICM Calculator supports up to 15 Players. Please ensure you enter from lasrgest stack in first place, second largest stack in second place and so on. to ensure the accurcy of the calulaction. </p>
             <div className='getPlayers'>
                 <label htmlFor='numofPlayers'>Number of Players</label>
                 <input
@@ -97,7 +123,7 @@ const ICMCalculator = () => {
                     value={numOfPlayers}
                     min={2}
                     max={15}
-                    onChange={(e) => setNumOfPlayers(parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleNumberOfPlayers(parseInt(e.target.value) || 0)}
                 />
                 <button className='getPlayerBtn' onClick={() => handleNumberOfPlayers(numOfPlayers)}>Get Players</button>
                 {errMessage && <p className='errMessage'>Sorry, the maximum number of players is 15.</p>}
@@ -106,20 +132,18 @@ const ICMCalculator = () => {
                 <div className='icmInput'>
                     {players.map((player, index) => (
                         <div key={index} className='icmInputSingle'>
-                            <label className='icmPlayerIndex'>Player {index + 1}:</label>
+                            <label className='icmPlayerIndex'> {index + 1}:</label>
                             <input
                                 type="text"
                                 placeholder="Stack"
                                 value={formatChips(player.stack)}
-                                onChange={(e) => handlePlayerChange(index, 'stack', e.target.value.replace('T-', '').replace(/,/g, ''))}
-                                min={1}
+                                onChange={(e) => handlePlayerChange(index, 'stack', e.target.value)}
                             />
                             <input className='icmPrizeInput'
                                 type="text"
                                 placeholder="Prize"
                                 value={formatMoney(player.prize)}
-                                onChange={(e) => handlePlayerChange(index, 'prize', e.target.value.replace(/[$,]/g, ''))}
-                                min={0}
+                                onChange={(e) => handlePlayerChange(index, 'prize', e.target.value)}
                             />
                         </div>
                     ))}
@@ -137,7 +161,7 @@ const ICMCalculator = () => {
                 </div>
                     {results.length > 0 && results.map((result, index) => (
                         <div key={index} className='payoutsSingle icmPayoutsSingle'>
-                            Player {index + 1}: <span className='placePayout'> {formatMoney(result.ev.toFixed(2))}</span> <span className='payoutPercentageText'> ({result.percentage.toFixed(2)}%)</span>
+                             {index + 1}: <span className='placePayout'> {formatMoney(result.ev.toFixed(2))}</span> <span className='payoutPercentageText'> ({result.percentage.toFixed(2)}%)</span>
                         </div>
                     ))}
                 </div>

@@ -1,22 +1,26 @@
 .icmContainer {
+    display: flex;
+    flex-direction: column;
     margin: 1rem auto 0 auto;
-    min-width: 50vw;
-
+    max-width: 1000px;
+    align-items: center;
 }
 
 .icmHeading {
     margin-bottom: 1rem;
     text-align: center;
+
 }
 
 .icmDetails {
     font-size: small;
     font-style: italic;
     color: rgba(255, 255, 255, 0.442);
-    text-wrap: wrap;
-    padding-bottom: .5rem;
     text-align: center;
-    margin-bottom: 1REM;
+    text-wrap: wrap;
+    max-width: 600px;
+    margin: 1rem 3rem;
+
 }
 
 .getPlayers {
@@ -25,17 +29,26 @@
     text-align: center;
     max-width: 50%;
     margin: 0 auto;
+    align-items: center;
+}
+
+#numofPlayers {
+    margin-top: .5rem;
+    min-width: 12rem;
+
 }
 
 .getPlayers input, 
 .icmInput input {
-    margin: .3rem 0 1rem 0;
+    margin-bottom: .5rem;
     padding: .3rem;
     border-radius: 20px;
     background-color: white;
     text-align: center;
     font-size: medium;
     color: #000;
+    min-width: 15vw;
+    max-width: 30vw;
     
 }
 .getPlayers input::-webkit-inner-spin-button, 
@@ -56,7 +69,8 @@
     border-radius: 15px;
     background-color: var(--main);
     transition: .3s;
-    margin-bottom: .5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .getPlayerBtn:hover {
@@ -67,6 +81,7 @@
 .icmInput {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .icmPlayerIndex {
@@ -91,6 +106,7 @@
     margin: 0 auto .5rem auto;
     justify-content: center;
     align-items: center;
+    margin-top: 1rem;
  
 }
 
@@ -104,7 +120,7 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    margin: 0 auto;
+    margin: 0 auto 2rem auto;
 }
 
 .icmTotalsSingle {
@@ -115,10 +131,4 @@
     margin: 1rem 0 1rem 0;
 }
 
-.icmPayoutsSingle {
-    margin-bottom: .5rem;
-}
 
-.icmPrizeInput {
-    margin-left: .5rem !important;
-}
