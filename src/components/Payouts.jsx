@@ -7,6 +7,7 @@ import { FaCheck } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import '../Styles/payouts.css';
 
+
 function Payouts() {
 
         const [entries, setEntries] = useState('');
@@ -22,6 +23,10 @@ function Payouts() {
         const [tick, setTick] = useState(false);
         const [cross, setCross] = useState(false);
         const [playerError, setPlayerError] = useState(false);
+        const [differenceText, setDifferenceText] = useState(false);
+        const [differenceAmount, setDifferenceAmount] = useState('');
+        const [bracketPayouts, setBracketPayouts] = useState(false);
+        const [removePayout, setRemovePayout] = useState(false);
 
         useEffect(() => {
             percentageDetailText(percentage);
@@ -34,7 +39,8 @@ function Payouts() {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
             }).format(value);
-        };
+        }
+        
 
         const formatPrizePool = (event) => {
             let value = event.target.value.replace(/[^0-9]/g, "");
@@ -110,7 +116,8 @@ function Payouts() {
         
             const extraPlaces = parseInt(extraPlacesPaid, 10);
             const adjustIndex = percentIndex + extraPlaces < data.length ? percentIndex + extraPlaces : percentIndex;
-            const payoutPercentages = data[adjustIndex].payouts;
+            const finalIndex = removePayout && adjustIndex > 0 ? adjustIndex - 1 : adjustIndex;
+            const payoutPercentages = data[finalIndex].payouts;
             const roundingPayouts = rounding.trim() === '' ? 0 : parseInt(rounding.replace(/[^0-9.]/g, ''));
 
             let payouts = payoutPercentages.map((percentage, index) => {
@@ -124,7 +131,17 @@ function Payouts() {
             const total = payouts.reduce((acc, val) => acc + val.payout, 0);
             setTotalPayouts(total);
 
-            
+            const difference = prizePool - total;
+
+                if (difference !== 0) {
+                    setDifferenceText(true);
+                    setDifferenceAmount(difference);
+                } else if (difference === 0) {
+                    setDifferenceText(false);
+                }
+            console.log("difference is : ", difference)
+            console.log("difference is : ", differenceText)
+
                 if (total === prizePool) {
                      setTick(true);
                      setCross(false);
@@ -132,10 +149,10 @@ function Payouts() {
                         setTick(false);
                         setCross(true);
                     }
+            
 
             let validPayouts = payouts.filter(payout => !isNaN(payout.payout));
             return validPayouts;
-
             
         };
 
@@ -164,11 +181,38 @@ function Payouts() {
 
 
         const displayPayouts = () => {
-            return payouts.map(payout => {
-                const formattedPayout = formatCurrency(payout.payout);
-                return <p className='payoutSingle' key={ payout.place }> Place { payout.place }: <span className='placePayout'> { formattedPayout } </span> </p>;
+            if (!bracketPayouts) {
+                return payouts.map(payout => {
+                    const formattedPayout = formatCurrency(payout.payout);
+                    return <p className='payoutSingle' key={payout.place}> Place {payout.place}: <span className='placePayout'>{formattedPayout}</span> </p>;
+                });
+            }
+        
+            let groupedPayouts = [];
+            let currentGroup = [];
+            
+            payouts.forEach((payout, index) => {
+                currentGroup.push(payout);
+                if (index === payouts.length - 1 || payout.payout !== payouts[index + 1].payout) {
+                    groupedPayouts.push([...currentGroup]);
+                    currentGroup = [];
+                }
+            });
+        
+            return groupedPayouts.map(group => {
+                const placeText = group.length === 1
+                    ? `Place ${group[0].place}`
+                    : `Places ${group[0].place} - ${group[group.length - 1].place}`;
+                const formattedPayout = formatCurrency(group[0].payout);
+                return (
+                    <p className='payoutSingle' key={group[0].place}>
+                        {placeText}: <span className='placePayout'>{formattedPayout}</span>
+                    </p>
+                );
             });
         };
+        
+        
 
         
 
@@ -233,6 +277,38 @@ function Payouts() {
             value={rounding}
             onChange={formatRounding}
             />
+        <div className='sliders'>
+            <div className='slider-container'>
+                <p>Bracket Payouts </p>
+                <div className='slider'>
+                    <input 
+                        type='checkbox'
+                        name='slider'
+                        id='slider'
+                        checked={bracketPayouts}
+                        onChange={() => setBracketPayouts(!bracketPayouts)}
+                    />
+                    <label htmlFor='slider'></label>
+                </div>
+            </div>
+            <div className='slider-container'>
+                <p>Remove Payout</p>
+                <div className='slider'>
+                    <input 
+                        type='checkbox'
+                        name='remove-slider'
+                        id='remove-slider'
+                        checked={removePayout}
+                        onChange={() => setRemovePayout(!removePayout)}
+                    />
+                    <label htmlFor='remove-slider'></label>
+                </div>
+            </div>
+
+        </div>
+        
+
+
 
         <button className='payoutsBtn' onClick={ processPayouts }>Payouts</button>
     </div>
@@ -248,6 +324,7 @@ function Payouts() {
         {totalPayouts && <p className='payoutsTotalText'>Total: {formatCurrency(totalPayouts) }
         {tick && <FaCheck  className='totalIconsTick' /> }
         {cross && <FaXmark className='totalIconsCross' /> }</p>}
+        {differenceText && <p className='diffText'> Variance: {formatCurrency(differenceAmount)}</p>}
         
     </div>
 </section>

@@ -35,6 +35,7 @@ h1 {
 .navMenu {
     display: flex; 
     list-style-type: none;
+    z-index: 1000;
 }
 
 .link {

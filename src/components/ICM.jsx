@@ -113,7 +113,7 @@ const ICMCalculator = () => {
     return (
         <section className='icmContainer'>
             <h2 className='icmHeading'>ICM Calculator</h2>
-            <p className='icmDetails'>ICM Calculator supports up to 15 Players. Please ensure you enter from lasrgest stack in first place, second largest stack in second place and so on. to ensure the accurcy of the calulaction. </p>
+            <p className='icmDetails'>ICM Calculator supports up to 15 Players. Please ensure you enter from lasrgest stack in first place, second largest stack in second place and so on. to ensure the accurcy of the calulaction. NOTE: This ICM Calulator Rounds to the Nearest Doller.</p>
             <div className='getPlayers'>
                 <label htmlFor='numofPlayers'>Number of Players</label>
                 <input
